@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="collision">
+      <UniqueIdentifier>{1aae5adc-db06-4d2b-a782-9e6f86a11490}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common">
+      <UniqueIdentifier>{d970ad19-1ec7-48a2-b352-e5d354f084c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="debug">
+      <UniqueIdentifier>{09159f15-ce4d-492b-b29f-ab9f0e238f43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dynamics">
+      <UniqueIdentifier>{fa4de66b-31db-4563-8a1d-0c207e4f6676}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="debug\ph_world_renderer.cpp">
+      <Filter>debug</Filter>
+    </ClCompile>
+    <ClCompile Include="dynamics\ph_world.cpp">
+      <Filter>dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="dynamics\ph_rigidbody.cpp">
+      <Filter>dynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="ph_alloc.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="debug\ph_world_renderer.h">
+      <Filter>debug</Filter>
+    </ClInclude>
+    <ClInclude Include="debug\DebugRenderer.h">
+      <Filter>debug</Filter>
+    </ClInclude>
+    <ClInclude Include="dynamics\ph_world.h">
+      <Filter>dynamics</Filter>
+    </ClInclude>
+    <ClInclude Include="dynamics\ph_world_internal.h">
+      <Filter>dynamics</Filter>
+    </ClInclude>
+    <ClInclude Include="dynamics\ph_rigidbody.h">
+      <Filter>dynamics</Filter>
+    </ClInclude>
+    <ClInclude Include="ph_alloc.h" />
+  </ItemGroup>
+</Project>
