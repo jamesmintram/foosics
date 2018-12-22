@@ -13,6 +13,9 @@ struct ph_vec3 {
 
 extern ph_vec3 ph_vec3_zero;
 
+void ph_vec3_normalise(ph_vec3 &o_dest, ph_vec3 const& i_a);
+
+void ph_vec3_inverse(ph_vec3 &o_dest, ph_vec3 const& i_a);
 float ph_vec3_magnitude(ph_vec3 const& i_a);
 
 void ph_vec3_add(ph_vec3 &o_dest, ph_vec3 const& i_a, ph_vec3 const& i_b);

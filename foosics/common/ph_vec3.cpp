@@ -1,16 +1,41 @@
 #include "ph_vec3.h"
 
 #include <math.h>
+#include <float.h>
 
 ph_vec3 ph_vec3_zero = { 0 };
 
-float ph_vec3_magnitude(ph_vec3 const& i_a)
+void ph_vec3_normalise(ph_vec3 &o_dest, ph_vec3 const& i_a)
 {
-    float sqr_mag = 
+    float mag = ph_vec3_magnitude(i_a);
+    if (mag < FLT_EPSILON)
+    {
+        //TODO: Assert
+        return;
+    }
+
+    float inv_mag = 1.0f / mag;
+
+    ph_vec3_mul(o_dest, i_a, inv_mag);
+}
+
+void ph_vec3_inverse(ph_vec3 &o_dest, ph_vec3 const& i_a)
+{
+    o_dest.x = -i_a.x;
+    o_dest.y = -i_a.y;
+    o_dest.z = -i_a.z;
+}
+
+float ph_vec3_sqr_magnitude(ph_vec3 const& i_a)
+{
+    return
         i_a.x * i_a.x +
         i_a.y * i_a.y +
         i_a.z * i_a.z;
-
+}
+float ph_vec3_magnitude(ph_vec3 const& i_a)
+{
+    float sqr_mag = ph_vec3_sqr_magnitude(i_a);
     return sqrtf(sqr_mag);
 }
 
