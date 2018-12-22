@@ -11,29 +11,60 @@ struct vec3
 	float z;
 };
 
+
+
 void ph_world_debug_render(IDebugRenderer *renderer, ph_world *world)
 {
 	uint32_t colors[] = {
 		0xFF0000FF,
 		0xFF00FF00,
-		0xFFFF0000
+		0xFFFF0000,
+		0xFF00FFFF,
 	};
 
 	//TODO: Render the ground plane as a grid
 
 	//TODO: Foreach body, render a cube at its position
 
-	for (int t = 0; t < 10; t++)
+	vec3 lineStart = { -5, -2, 2 };
+	vec3 linePoints[] = 
+	{ 
+		{  5, -2, 2 }, 
+		{  5, 2, 2 },
+		{ -5, 2, 2 },
+		{ -5, -2, 2 },
+	};
+
+	renderer->SetPenColor(0xFFFFFFFF);// 222222);
+	for (int x = 0; x < 11; x++) 
 	{
-		float y = 2.0f * t - 1.0f;
+		//for (int y = 0; y < 10; y++)
+		//{
+			vec3 vLineStart	= { x - 0.5f, 0,  -0.5f };
+			vec3 vLineEnd	= { x - 0.5f, 0, 9.5f };
 
-		vec3 lineStart = { -100, y, 10.5f };
-		vec3 lineEnd = { 100, y, 10.5f };
+			renderer->SetPen((float*)&vLineStart);
+			renderer->DrawLine((float*)&vLineEnd);
 
-		renderer->SetPenColor(colors[t % 3]);
-		renderer->SetPen((float*)&lineStart);
-		renderer->DrawLine((float*)&lineEnd);
+			vec3 hLineStart = { -0.5f, 0, x - 0.5f };
+			vec3 hLineEnd	= { 9.5f, 0, x - 0.5f };
+
+			renderer->SetPen((float*)&hLineStart);
+			renderer->DrawLine((float*)&hLineEnd);
+		//}
 	}
+
+	static float ctr = 0;
+	vec3 cubePos = { 0, 0, 0 };
+	vec3 cubeRot = { 0, ctr += 0.01f, 0 };
+
+	renderer->SetPenColor(colors[0]);
+	renderer->DrawCube((float*)&cubePos, (float*)&cubeRot);
+
+	renderer->SetPenColor(colors[1]);
+	cubePos.x = 5;
+	//renderer->DrawCube((float*)&cubePos, (float*)&cubeRot);
+
 
 	renderer->Render();
 }

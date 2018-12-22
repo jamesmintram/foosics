@@ -3,7 +3,7 @@
 #include <windows.h>
 #include <assert.h>
 
-#include "../common/dxmath/DirectXMath.h"
+#include "../third_party/dxmath/DirectXMath.h"
 
 #include "DebugRenderer_DX9.h"
 
@@ -104,37 +104,27 @@ void mat4Mul(float *result, float const *lhs, float const *rhs)
 
 void matLookat(float *result, float *i_eye, float *i_target, float *i_up)
 {
-	float f[] = {
-		i_target[0] - i_eye[0],
-		i_target[1] - i_eye[1],
-		i_target[2] - i_eye[2]
+	DirectX::XMVECTOR eye = {
+		i_eye[0],
+		i_eye[1],
+		i_eye[2],
+		0
+	};
+	DirectX::XMVECTOR target = {
+		i_target[0],
+		i_target[1],
+		i_target[2],
+		0
+	};
+	DirectX::XMVECTOR up = {
+		i_up[0],
+		i_up[1],
+		i_up[2],
+		0
 	};
 
-	vec3Normalize(f);
-	
-	float s[3];
-	vec3Cross(s, f, i_up);
-	vec3Normalize(s);
-
-	float u[3];
-	vec3Cross(u, s, f);
-
-	float rotationMatrix[16] = {
-		 s[0],  s[1],  s[2], 0,
-		 u[0],  u[1],  u[2], 0,
-		-f[0], -f[1], -f[2], 0,
-		 0,     0,     0,    1
-	};
-
-	/*rotationMatrix[12] = -i_eye[0];
-	rotationMatrix[13] = -i_eye[1];
-	rotationMatrix[14] = -i_eye[2];*/
-	
-	rotationMatrix[3] = -i_eye[0];
-	rotationMatrix[7] = -i_eye[1];
-	rotationMatrix[11] = -i_eye[2];
-
-	memcpy(result, rotationMatrix, sizeof(rotationMatrix));
+	DirectX::XMMATRIX xresult = DirectX::XMMatrixLookAtLH(eye, target, up);
+	memcpy(result, &xresult, sizeof(*result) * 16);
 }
 
 LRESULT drawDX(HWND hwnd)
@@ -151,12 +141,12 @@ LRESULT drawDX(HWND hwnd)
 void init()
 {
 	//Setup the view/proj mat
-	float eye[] = { 0, 5, -10 };
+	float eye[] = { 0, 5, -5 };
 	float target[] = { 0, 0, 0 };
 	float up[] = { 0, 1, 0 };
 
-	//matLookat(viewMat, eye, target, up);
-	matPerspective(projmat, 1.0f, 100.0f, 60.0f, 4.0f / 3.0f);
+	matLookat(viewMat, eye, target, up);
+	matPerspective(projmat, 2.0f, 10.0f, 20.0f, 4.0f / 3.0f);
 
 	demoInit();
 }

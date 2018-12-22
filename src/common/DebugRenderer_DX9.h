@@ -46,8 +46,41 @@ const float kIdentity[] = {
 	0, 0, 0, 1,
 };
 
-#define CUSTOMFVF (D3DFVF_XYZ | D3DFVF_DIFFUSE)
+const DirectX::FXMVECTOR cube[] = {
+	{ -0.5f, -0.5f,  0.5f,       1 },
+	{  0.5f, -0.5f,  0.5f,       1 },
+	{  0.5f,  0.5f,  0.5f,       1 },
+	{ -0.5f,  0.5f,  0.5f,       1 },
+	   
+	{ -0.5f, -0.5f, -0.5f,       1 },
+	{ 0.5f,  -0.5f, -0.5f,       1 },
+	{ 0.5f,   0.5f, -0.5f,       1 },
+	{ -0.5f,  0.5f, -0.5f,       1 },
+};
 
+const uint16_t cubeIndices[] = {
+	// front
+	0, 2, 1,
+	2, 0, 3,
+	// right
+	1, 6, 5,
+	6, 1, 2,
+	// back
+	7, 5, 6,
+	5, 7, 4,
+	// left
+	4, 3, 0,
+	3, 4, 7,
+	// bottom
+	4, 1, 5,
+	1, 4, 0,
+	// top
+	3, 6, 2,
+	6, 3, 7
+};
+
+#define CUSTOMFVF (D3DFVF_XYZ | D3DFVF_DIFFUSE )
+#define COUNT_OF(x) ((sizeof(x)/sizeof(0[x])) / ((size_t)(!(sizeof(x) % sizeof(0[x])))))
 
 class DebugRenderer : public IDebugRenderer
 {
@@ -58,6 +91,8 @@ private:
 	LPDIRECT3DVERTEXBUFFER9 triBuffer;
 	LPDIRECT3DVERTEXBUFFER9 lineBuffer;
 	LPDIRECT3DVERTEXBUFFER9 pointBuffer;
+
+	LPDIRECT3DINDEXBUFFER9 triIndices;
 
 	D3DMATRIX projectionMatrix;
 	D3DMATRIX viewMatrix;
@@ -103,9 +138,11 @@ public:
 		ZeroMemory(&d3dpp, sizeof(D3DPRESENT_PARAMETERS));
 
 		d3dpp.Windowed = true;
-		d3dpp.SwapEffect = D3DSWAPEFFECT_COPY;
+		d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
+		d3dpp.EnableAutoDepthStencil = TRUE;
+		d3dpp.AutoDepthStencilFormat = D3DFMT_D16;
 		d3dpp.hDeviceWindow = hWnd;
-		d3dpp.BackBufferFormat = D3DFMT_X8R8G8B8;
+		d3dpp.BackBufferFormat = D3DFMT_UNKNOWN;
 		d3dpp.BackBufferWidth = 1024;
 		d3dpp.BackBufferHeight = 768;
 
@@ -113,7 +150,7 @@ public:
 			D3DADAPTER_DEFAULT,
 			D3DDEVTYPE_HAL,
 			hWnd,
-			D3DCREATE_SOFTWARE_VERTEXPROCESSING,
+			D3DCREATE_HARDWARE_VERTEXPROCESSING,
 			&d3dpp,
 			&d3ddev);
 
@@ -142,6 +179,14 @@ public:
 			D3DPOOL_MANAGED,
 			&pointBuffer,
 			NULL);
+
+		d3ddev->CreateIndexBuffer(
+			kTriCount * 3,
+			0,
+			D3DFMT_INDEX16,
+			D3DPOOL_MANAGED,
+			&triIndices,
+			NULL);
 	}
 
 	void Render()
@@ -154,9 +199,16 @@ public:
 		d3ddev->SetTransform(D3DTS_PROJECTION, &projectionMatrix);
 		d3ddev->SetTransform(D3DTS_VIEW, &viewMatrix);
 
-		d3ddev->SetRenderState(D3DRS_ZENABLE, D3DZB_FALSE);
+		d3ddev->SetRenderState(D3DRS_LIGHTING, FALSE);
 
-		RenderCubes();
+		d3ddev->SetRenderState(D3DRS_ZENABLE, D3DZB_TRUE);
+
+
+		d3ddev->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+		d3ddev->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+		d3ddev->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
+
+		RenderTriangles();
 		RenderLines();
 		RenderPoints();
 
@@ -202,13 +254,71 @@ public:
 	}
 
 private:
-	void RenderCubes()
+	void RenderTriangles()
 	{
+		uint16_t * indices = nullptr;
+		triIndices->Lock(0, 0, (void**)&indices, 0);
 
+		CUSTOMVERTEX * triBufferData = nullptr;
+		triBuffer->Lock(0, 0, (void**)&triBufferData, 0);
+		
+		uint16_t *currentIndex = indices;
+		CUSTOMVERTEX *currentVertex = triBufferData;
+
+		// Cubes first
+		const size_t cubeCount = m_cubes.size();
+
+		for (size_t idx = 0; idx < cubeCount; idx++)
+		{
+			float const *pos = m_cubes[idx].pos;
+			float const *rot = m_cubes[idx].rot;
+			uint32_t const col = m_cubes[idx].color;
+
+			DirectX::XMMATRIX rotM = DirectX::XMMatrixRotationRollPitchYaw(rot[0], rot[1], rot[2]);
+			DirectX::XMMATRIX trnM = DirectX::XMMatrixTranslation(pos[0], pos[1], pos[2]);
+
+			DirectX::XMMATRIX cubeM = DirectX::XMMatrixMultiply(rotM, trnM);
+
+			size_t startVert = currentVertex - triBufferData;
+
+			//TODO: Push transformed verts into the buffer
+			for (int idx = 0; idx < COUNT_OF(cube); idx++)
+			{
+				DirectX::XMVECTOR vertPos = DirectX::XMVector4Transform(cube[idx], cubeM);
+				currentVertex->x = vertPos.m128_f32[0];
+				currentVertex->y = vertPos.m128_f32[1];
+				currentVertex->z = vertPos.m128_f32[2];
+			
+				currentVertex->color = col + idx * 10000;
+
+				currentVertex++;
+			}
+
+			for (int idx = 0; idx < COUNT_OF(cubeIndices); idx++)
+			{
+				*currentIndex = cubeIndices[idx] + startVert;
+				currentIndex++;
+			}
+		}
+		
+		triBuffer->Unlock();
+		triIndices->Unlock();
+
+		m_cubes.clear();
+		size_t const triCount = (currentIndex - indices) / 3;
+		size_t const vertCount = currentVertex - triBufferData;
+
+		if (triCount == 0) return;
+
+		d3ddev->SetFVF(CUSTOMFVF);
+		d3ddev->SetStreamSource(0, triBuffer, 0, sizeof(CUSTOMVERTEX));
+		d3ddev->SetIndices(triIndices);
+		d3ddev->DrawIndexedPrimitive(D3DPT_TRIANGLELIST, 0, 0, vertCount, 0, triCount);
 	}
 	void RenderLines()
 	{
 		const size_t lineCount = m_lines.size();
+		if (lineCount == 0) return;
 
 		CUSTOMVERTEX* lineBufferData = nullptr;
 		lineBuffer->Lock(0, 0, (void**)&lineBufferData, 0);
@@ -235,8 +345,6 @@ private:
 		lineBuffer->Unlock();
 		m_lines.clear();
 
-		d3ddev->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
-
 		d3ddev->SetStreamSource(0, lineBuffer, 0, sizeof(CUSTOMVERTEX));
 		d3ddev->SetFVF(CUSTOMFVF);
 		d3ddev->DrawPrimitive(D3DPT_LINELIST, 0, lineCount);
@@ -251,7 +359,7 @@ private:
 		d3ddev->Clear(
 			0,
 			NULL,
-			D3DCLEAR_TARGET,
+			D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
 			col,
 			1.0f,
 			0);
