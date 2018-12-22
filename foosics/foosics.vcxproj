@@ -19,18 +19,25 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="common\ph_transform.cpp" />
+    <ClCompile Include="common\ph_vec3.cpp" />
     <ClCompile Include="debug\ph_world_renderer.cpp" />
     <ClCompile Include="dynamics\ph_rigidbody.cpp" />
     <ClCompile Include="dynamics\ph_world.cpp" />
     <ClCompile Include="ph_alloc.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="common\ph_transform.h" />
+    <ClInclude Include="common\ph_vec3.h" />
     <ClInclude Include="debug\DebugRenderer.h" />
     <ClInclude Include="debug\ph_world_renderer.h" />
     <ClInclude Include="dynamics\ph_rigidbody.h" />
     <ClInclude Include="dynamics\ph_world.h" />
     <ClInclude Include="dynamics\ph_world_internal.h" />
     <ClInclude Include="ph_alloc.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="doc\notes.md" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9CD57FAC-B32B-4F77-8653-3E0CD670AF04}</ProjectGuid>

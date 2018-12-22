@@ -141,12 +141,12 @@ LRESULT drawDX(HWND hwnd)
 void init()
 {
 	//Setup the view/proj mat
-	float eye[] = { 0, 5, -5 };
-	float target[] = { 0, 0, 0 };
+	float eye[] = { 4.5f, 10, -5 };
+	float target[] = { 4.5f, 5, 0 };
 	float up[] = { 0, 1, 0 };
 
 	matLookat(viewMat, eye, target, up);
-	matPerspective(projmat, 2.0f, 10.0f, 20.0f, 4.0f / 3.0f);
+	matPerspective(projmat, 1.0f, 100.0f, 20.0f, 4.0f / 3.0f);
 
 	demoInit();
 }

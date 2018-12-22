@@ -2,12 +2,33 @@
 
 #include "../ph_alloc.h"
 
+void ph_rigidbody_integrate(ph_rigidbody *i_rigidBody, float i_timestep)
+{
+	// Reset force
+	i_rigidBody->force = ph_vec3_zero;
+}
+
+//@@ Dynamics
+
+void ph_rigidbody_add_force(ph_rigidbody *i_rigidBody, ph_vec3 const& i_force)
+{
+	//Add force
+}
+
+//@@ Lifecycle
+
 ph_rigidbody *ph_rigidbody_create(ph_alloc *i_allocator)
 {
 	ph_rigidbody *newBody = (ph_rigidbody*)ph_alloc_allocate(i_allocator, sizeof(ph_rigidbody));
 
 	newBody->next = nullptr;
 	newBody->prev = nullptr;
+
+	newBody->force = ph_vec3_zero;
+	newBody->velocity = ph_vec3_zero;
+	newBody->inv_mass = 0.0f;
+
+	newBody->transform = ph_transform_zero;
 
 	return newBody;
 }

@@ -33,3 +33,20 @@ void ph_world_destroy_rigidbody(ph_world *world, ph_rigidbody *i_rigidBody)
 
 	ph_rigidbody_destroy(world->allocator, i_rigidBody);
 }
+
+void ph_world_step()
+{
+	/*#
+	TODO:
+
+	Force accum:		
+		Gravity
+
+	Integrate:
+		Foreach object
+			-> Calculate accell
+			-> Add accell to vel
+			-> Add vel to position
+			-> Drag for accell and vel?
+	*/
+}

@@ -13,6 +13,9 @@
     <Filter Include="dynamics">
       <UniqueIdentifier>{fa4de66b-31db-4563-8a1d-0c207e4f6676}</UniqueIdentifier>
     </Filter>
+    <Filter Include="doc">
+      <UniqueIdentifier>{ee492ba1-db09-4338-ad94-c9a65778456f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="debug\ph_world_renderer.cpp">
@@ -25,6 +28,12 @@
       <Filter>dynamics</Filter>
     </ClCompile>
     <ClCompile Include="ph_alloc.cpp" />
+    <ClCompile Include="common\ph_vec3.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="common\ph_transform.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="debug\ph_world_renderer.h">
@@ -43,5 +52,16 @@
       <Filter>dynamics</Filter>
     </ClInclude>
     <ClInclude Include="ph_alloc.h" />
+    <ClInclude Include="common\ph_vec3.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\ph_transform.h">
+      <Filter>common</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="doc\notes.md">
+      <Filter>doc</Filter>
+    </None>
   </ItemGroup>
 </Project>

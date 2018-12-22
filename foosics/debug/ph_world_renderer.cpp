@@ -22,19 +22,6 @@ void ph_world_debug_render(IDebugRenderer *renderer, ph_world *world)
 		0xFF00FFFF,
 	};
 
-	//TODO: Render the ground plane as a grid
-
-	//TODO: Foreach body, render a cube at its position
-
-	vec3 lineStart = { -5, -2, 2 };
-	vec3 linePoints[] = 
-	{ 
-		{  5, -2, 2 }, 
-		{  5, 2, 2 },
-		{ -5, 2, 2 },
-		{ -5, -2, 2 },
-	};
-
 	renderer->SetPenColor(0xFFFFFFFF);// 222222);
 	for (int x = 0; x < 11; x++) 
 	{
@@ -56,14 +43,14 @@ void ph_world_debug_render(IDebugRenderer *renderer, ph_world *world)
 
 	static float ctr = 0;
 	vec3 cubePos = { 0, 0, 0 };
-	vec3 cubeRot = { 0, ctr += 0.01f, 0 };
+	vec3 cubeRot = { 0, ctr, 0 };
 
 	renderer->SetPenColor(colors[0]);
 	renderer->DrawCube((float*)&cubePos, (float*)&cubeRot);
 
 	renderer->SetPenColor(colors[1]);
-	cubePos.x = 5;
-	//renderer->DrawCube((float*)&cubePos, (float*)&cubeRot);
+	cubePos.x = 9;
+	renderer->DrawCube((float*)&cubePos, (float*)&cubeRot);
 
 
 	renderer->Render();
