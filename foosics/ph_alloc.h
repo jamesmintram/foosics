@@ -2,8 +2,8 @@
 
 struct ph_alloc
 {
-	void* (*alloc)(ph_alloc *self, size_t size);
-	void (*free)(ph_alloc *self, void* toFree);
+    void* (*alloc)(ph_alloc *self, size_t size);
+    void (*free)(ph_alloc *self, void* toFree);
 };
 
 void *ph_alloc_allocate(ph_alloc *alloc, size_t size);

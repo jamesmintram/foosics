@@ -242,7 +242,7 @@ public:
 		memcpy(penPos, endPoint, sizeof(*endPoint) * 3);
 	}
 
-	void DrawCube(float *pos, float * rot)
+	void DrawCube(float const *pos, float const *rot)
 	{
 		//Transform verts and append to buffer
 		RenderedCube cube;

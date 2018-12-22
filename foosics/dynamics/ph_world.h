@@ -10,7 +10,7 @@ ph_world       *ph_world_create(ph_alloc *i_allocator);
 
 // Rigidbody 
 ph_rigidbody   *ph_world_create_rigidbody(ph_world *world);
-void			ph_world_destroy_rigidbody(ph_world *world, ph_rigidbody *i_rigidBody);
+void            ph_world_destroy_rigidbody(ph_world *world, ph_rigidbody *i_rigidBody);
 
 
-void			ph_world_step();
+void            ph_world_step(ph_world *world);

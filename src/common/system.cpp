@@ -127,14 +127,17 @@ void matLookat(float *result, float *i_eye, float *i_target, float *i_up)
 	memcpy(result, &xresult, sizeof(*result) * 16);
 }
 
+bool initRan = false;
+
 LRESULT drawDX(HWND hwnd)
 {
+	if (initRan == false) return 0;
+
 	renderer->SetViewProj(viewMat, projmat);
 
 	demoDraw(renderer);
 	return 0;
 }
-
 
 // Add this
 
@@ -149,6 +152,7 @@ void init()
 	matPerspective(projmat, 1.0f, 100.0f, 20.0f, 4.0f / 3.0f);
 
 	demoInit();
+	initRan = true;
 }
 
 

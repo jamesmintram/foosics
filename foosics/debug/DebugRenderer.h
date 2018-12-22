@@ -13,5 +13,5 @@ public:
 	virtual void SetPen(float *newPenPos) = 0;
 	virtual void DrawPoint() = 0;
 	virtual void DrawLine(float *endPoint) = 0;
-	virtual void DrawCube(float *pos, float * rot) = 0;
+	virtual void DrawCube(float const *pos, float const *rot) = 0;
 };

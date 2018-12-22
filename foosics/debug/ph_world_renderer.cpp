@@ -1,58 +1,64 @@
 #include "ph_world_renderer.h"
 
 #include "../dynamics/ph_world_internal.h"
+#include "../dynamics/ph_rigidbody.h"
+
 #include "DebugRenderer.h"
 
 //TEMP:
 struct vec3
 {
-	float x;
-	float y;
-	float z;
+    float x;
+    float y;
+    float z;
 };
-
 
 
 void ph_world_debug_render(IDebugRenderer *renderer, ph_world *world)
 {
-	uint32_t colors[] = {
-		0xFF0000FF,
-		0xFF00FF00,
-		0xFFFF0000,
-		0xFF00FFFF,
-	};
+    uint32_t colors[] = {
+        0xFF0000FF,
+        0xFF00FF00,
+        0xFFFF0000,
+        0xFF00FFFF,
+    };
 
-	renderer->SetPenColor(0xFFFFFFFF);// 222222);
-	for (int x = 0; x < 11; x++) 
-	{
-		//for (int y = 0; y < 10; y++)
-		//{
-			vec3 vLineStart	= { x - 0.5f, 0,  -0.5f };
-			vec3 vLineEnd	= { x - 0.5f, 0, 9.5f };
+    renderer->SetPenColor(0xFFFFFFFF);// 222222);
 
-			renderer->SetPen((float*)&vLineStart);
-			renderer->DrawLine((float*)&vLineEnd);
+    for (int x = 0; x < 11; x++) 
+    {
+        vec3 vLineStart = { x - 0.5f, 0,  -0.5f };
+        vec3 vLineEnd = { x - 0.5f, 0, 9.5f };
 
-			vec3 hLineStart = { -0.5f, 0, x - 0.5f };
-			vec3 hLineEnd	= { 9.5f, 0, x - 0.5f };
+        renderer->SetPen((float*)&vLineStart);
+        renderer->DrawLine((float*)&vLineEnd);
 
-			renderer->SetPen((float*)&hLineStart);
-			renderer->DrawLine((float*)&hLineEnd);
-		//}
-	}
+        vec3 hLineStart = { -0.5f, 0, x - 0.5f };
+        vec3 hLineEnd = { 9.5f, 0, x - 0.5f };
 
-	static float ctr = 0;
-	vec3 cubePos = { 0, 0, 0 };
-	vec3 cubeRot = { 0, ctr, 0 };
+        renderer->SetPen((float*)&hLineStart);
+        renderer->DrawLine((float*)&hLineEnd);
+    }
 
-	renderer->SetPenColor(colors[0]);
-	renderer->DrawCube((float*)&cubePos, (float*)&cubeRot);
+	
 
-	renderer->SetPenColor(colors[1]);
-	cubePos.x = 9;
-	renderer->DrawCube((float*)&cubePos, (float*)&cubeRot);
+    static float ctr = 0;
+    renderer->SetPenColor(colors[0]);
 
+    ph_rigidbody *body = world->head;
 
-	renderer->Render();
+    while (body != nullptr) 
+    {
+        vec3 cubePos = { 0, 0, 0 };
+        vec3 cubeRot = { 0, ctr, 0 };
+
+        renderer->DrawCube(
+            (float const*)&body->transform.position,
+            (float const*)&body->transform.rotation);
+		
+        body = body->next;
+    }
+
+    renderer->Render();
 }
 
