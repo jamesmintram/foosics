@@ -15,7 +15,7 @@ struct RenderedCube
 {
 	float pos[3];
 	float rot[3];
-
+    float scale;
 	uint32_t color;
 };
 
@@ -242,13 +242,14 @@ public:
 		memcpy(penPos, endPoint, sizeof(*endPoint) * 3);
 	}
 
-	void DrawCube(float const *pos, float const *rot)
+	void DrawCube(float const *pos, float const *rot, float const scale)
 	{
 		//Transform verts and append to buffer
 		RenderedCube cube;
 		memcpy(&cube.pos, pos, sizeof(*pos) * 3);
 		memcpy(&cube.rot, rot, sizeof(*rot) * 3);
 		cube.color = penColor;
+        cube.scale = scale;
 
 		m_cubes.push_back(cube);
 	}
@@ -272,12 +273,15 @@ private:
 		{
 			float const *pos = m_cubes[idx].pos;
 			float const *rot = m_cubes[idx].rot;
+            float const scale = m_cubes[idx].scale;
 			uint32_t const col = m_cubes[idx].color;
 
 			DirectX::XMMATRIX rotM = DirectX::XMMatrixRotationRollPitchYaw(rot[0], rot[1], rot[2]);
 			DirectX::XMMATRIX trnM = DirectX::XMMatrixTranslation(pos[0], pos[1], pos[2]);
+            DirectX::XMMATRIX sclM = DirectX::XMMatrixScaling(scale, scale, scale);
 
 			DirectX::XMMATRIX cubeM = DirectX::XMMatrixMultiply(rotM, trnM);
+            cubeM = DirectX::XMMatrixMultiply(sclM, cubeM);
 
 			size_t startVert = currentVertex - triBufferData;
 

@@ -18,6 +18,8 @@ struct ph_rigidbody
 
     float   inv_mass;	//TODO: Derived from fixtures
 
+    float restitution;
+
     //TODO: Required in fixtures + shapes
     float radius;
 

@@ -144,8 +144,8 @@ LRESULT drawDX(HWND hwnd)
 void init()
 {
 	//Setup the view/proj mat
-	float eye[] = { 4.5f, 10, -5 };
-	float target[] = { 4.5f, 5, 0 };
+	float eye[] = { 4.5f, 2, -5 };
+	float target[] = { 4.5f, 2, 0 };
 	float up[] = { 0, 1, 0 };
 
 	matLookat(viewMat, eye, target, up);

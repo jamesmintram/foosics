@@ -84,7 +84,10 @@ ph_world_step(ph_world *world)
             ph_rigidbody_add_force(body, drag_vector);
         }
         
-        ph_rigidbody_add_accell(body, gravity);
+        if (body->inv_mass > 0)
+        {
+            ph_rigidbody_add_accell(body, gravity);
+        }
         ph_rigidbody_integrate(body, 1, timestep);
 
         body = body->next;
@@ -92,7 +95,7 @@ ph_world_step(ph_world *world)
 
     ph_contact_generate(world, world->contacts);
 
-    uint32_t iterations = world->contacts->count * 2;
+    uint32_t iterations = world->contacts->count;
 
     ph_resolve_collection(world->contacts, timestep, iterations);
 }

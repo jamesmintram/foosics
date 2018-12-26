@@ -18,7 +18,15 @@ calculate_separating_velocity(ph_contact &i_contact)
 static void 
 resolve_interpenetration(ph_contact &i_contact)
 {
-    //TODO:
+    if (i_contact.penetration <= 0) return;
+
+    ph_vec3 delta_pos;
+    ph_vec3_mul(delta_pos, i_contact.contact_normal, i_contact.penetration);
+
+    ph_vec3 new_pos;
+    ph_vec3_add(new_pos, i_contact.a->transform.position, delta_pos);
+
+    i_contact.a->transform.position = new_pos;
 }
 
 static void 

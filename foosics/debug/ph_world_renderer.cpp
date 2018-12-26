@@ -54,7 +54,8 @@ void ph_world_debug_render(IDebugRenderer *renderer, ph_world *world)
 
         renderer->DrawCube(
             (float const*)&body->transform.position,
-            (float const*)&body->transform.rotation);
+            (float const*)&body->transform.rotation,
+            body->radius * 2.0f);
 		
         body = body->next;
     }

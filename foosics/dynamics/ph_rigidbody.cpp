@@ -88,8 +88,9 @@ ph_rigidbody_create(ph_alloc *i_allocator)
     newBody->velocity = ph_vec3_zero;
     
     //TEMP
-    newBody->inv_mass = 0.0f;
-    newBody->radius = 0.2f;
+    newBody->inv_mass = 1.0f;
+    newBody->radius = 0.4f;
+    newBody->restitution = 0.5f;
 
     newBody->transform = ph_transform_zero;
 
