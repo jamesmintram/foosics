@@ -2,23 +2,32 @@
 #include "ph_world_internal.h"
 
 #include "ph_rigidbody.h"
+
 #include "../ph_alloc.h"
+#include "../collision/ph_contact.h"
+#include "../collision/ph_contact_generator.h"
+#include "../collision/ph_contact_resolver.h"
+
 
 //@@ Lifecycle
 
-ph_world *ph_world_create(ph_alloc *i_allocator)
+ph_world*
+ph_world_create(ph_alloc *i_allocator)
 {
-    ph_world *newWorld = (ph_world*)ph_alloc_allocate(i_allocator, sizeof(ph_world));
+    ph_world *newWorld = PH_ALLOC(ph_world, i_allocator);
 
     newWorld->allocator = i_allocator;
     newWorld->head = nullptr;
+    newWorld->contacts = PH_ALLOC(ph_contact_collection, i_allocator); 
 
     return newWorld;
 }
 
+
 //@@ Rigidbody
 
-ph_rigidbody *ph_world_create_rigidbody(ph_world *world)
+ph_rigidbody*
+ph_world_create_rigidbody(ph_world *world)
 {
     ph_rigidbody *newBody = ph_rigidbody_create(world->allocator);
 	
@@ -27,7 +36,8 @@ ph_rigidbody *ph_world_create_rigidbody(ph_world *world)
     return newBody;
 }
 
-void ph_world_destroy_rigidbody(ph_world *world, ph_rigidbody *i_rigidBody)
+void 
+ph_world_destroy_rigidbody(ph_world *world, ph_rigidbody *i_rigidBody)
 {
     world->head = ph_rigidbody_list_remove(world->head, i_rigidBody);
 
@@ -36,10 +46,11 @@ void ph_world_destroy_rigidbody(ph_world *world, ph_rigidbody *i_rigidBody)
 
 const float kMinVelocity = 0.01f;
 
-bool ph_calc_drag_coefficient(ph_vec3 &o_dest, ph_vec3 const& i_velocity)
+bool 
+ph_calc_drag_coefficient(ph_vec3 &o_dest, ph_vec3 const& i_velocity)
 {
-    const float kK1 = 1.01f;
-    const float kK2 = 1.01f;
+    const float kK1 = 0.01f;
+    const float kK2 = 0.01f;
 
     float drag_coeff = ph_vec3_magnitude(i_velocity);
     drag_coeff = kK1 * drag_coeff + kK2 * drag_coeff * drag_coeff;
@@ -56,7 +67,8 @@ bool ph_calc_drag_coefficient(ph_vec3 &o_dest, ph_vec3 const& i_velocity)
     return true;
 }
 
-void ph_world_step(ph_world *world)
+void 
+ph_world_step(ph_world *world)
 {
     ph_rigidbody *body = world->head;
 
@@ -72,10 +84,15 @@ void ph_world_step(ph_world *world)
             ph_rigidbody_add_force(body, drag_vector);
         }
         
-        
         ph_rigidbody_add_accell(body, gravity);
         ph_rigidbody_integrate(body, 1, timestep);
 
         body = body->next;
     }
+
+    ph_contact_generate(world, world->contacts);
+
+    uint32_t iterations = world->contacts->count * 2;
+
+    ph_resolve_collection(world->contacts, timestep, iterations);
 }

@@ -4,9 +4,14 @@
 
 #include <float.h>
 
-//@@ Dynamics
+void 
+ph_rigidbody_set_radius(ph_rigidbody *i_rigidBody, float i_radius)
+{
+    i_rigidBody->radius = i_radius;
+}
 
-void ph_rigidbody_set_mass(ph_rigidbody *i_rigidBody, float i_mass)
+void 
+ph_rigidbody_set_mass(ph_rigidbody *i_rigidBody, float i_mass)
 {
     if (i_mass == 0.0f)
     {
@@ -20,18 +25,24 @@ void ph_rigidbody_set_mass(ph_rigidbody *i_rigidBody, float i_mass)
     i_rigidBody->inv_mass = inverse_mass;
 }
 
-void ph_rigidbody_set_position(ph_rigidbody *i_rigidBody, ph_vec3 const& i_pos)
+
+//@@ Dynamics
+
+void 
+ph_rigidbody_set_position(ph_rigidbody *i_rigidBody, ph_vec3 const& i_pos)
 {
     i_rigidBody->transform.position = i_pos;
 }
 
-void ph_rigidbody_add_accell(ph_rigidbody *i_rigidBody, ph_vec3 const& i_accell)
+void 
+ph_rigidbody_add_accell(ph_rigidbody *i_rigidBody, ph_vec3 const& i_accell)
 {
     ph_vec3_add(i_rigidBody->accell, i_rigidBody->accell, i_accell);
 
 }
 
-void ph_rigidbody_add_force(ph_rigidbody *i_rigidBody, ph_vec3 const& i_force)
+void 
+ph_rigidbody_add_force(ph_rigidbody *i_rigidBody, ph_vec3 const& i_force)
 {
     ph_vec3_add(i_rigidBody->force, i_rigidBody->force, i_force);
 }
@@ -39,7 +50,8 @@ void ph_rigidbody_add_force(ph_rigidbody *i_rigidBody, ph_vec3 const& i_force)
 
 //@@ Internal
 
-void ph_rigidbody_integrate(ph_rigidbody *i_rigidBodies, uint32_t count, float i_timestep)
+void 
+ph_rigidbody_integrate(ph_rigidbody *i_rigidBodies, uint32_t count, float i_timestep)
 {
     for (uint32_t idx = 0; idx < count; idx++)
     {
@@ -62,7 +74,8 @@ void ph_rigidbody_integrate(ph_rigidbody *i_rigidBodies, uint32_t count, float i
 
 //@@ Lifecycle
 
-ph_rigidbody *ph_rigidbody_create(ph_alloc *i_allocator)
+ph_rigidbody*
+ph_rigidbody_create(ph_alloc *i_allocator)
 {
     ph_rigidbody *newBody = (ph_rigidbody*)ph_alloc_allocate(i_allocator, sizeof(ph_rigidbody));
 
@@ -73,19 +86,24 @@ ph_rigidbody *ph_rigidbody_create(ph_alloc *i_allocator)
     newBody->accell = ph_vec3_zero;
 
     newBody->velocity = ph_vec3_zero;
+    
+    //TEMP
     newBody->inv_mass = 0.0f;
+    newBody->radius = 0.2f;
 
     newBody->transform = ph_transform_zero;
 
     return newBody;
 }
 
-void ph_rigidbody_destroy(ph_alloc *i_allocator, ph_rigidbody *i_rigidBody)
+void 
+ph_rigidbody_destroy(ph_alloc *i_allocator, ph_rigidbody *i_rigidBody)
 {
     ph_alloc_free(i_allocator, i_rigidBody);
 }
 
-ph_rigidbody *ph_rigidbody_list_add(ph_rigidbody *head, ph_rigidbody *newRigidBody)
+ph_rigidbody*
+ph_rigidbody_list_add(ph_rigidbody *head, ph_rigidbody *newRigidBody)
 {
     // First item added to the list?
     if (head == nullptr)
@@ -101,7 +119,8 @@ ph_rigidbody *ph_rigidbody_list_add(ph_rigidbody *head, ph_rigidbody *newRigidBo
     return newRigidBody;
 }
 
-ph_rigidbody * ph_rigidbody_list_remove(ph_rigidbody *head, ph_rigidbody *oldRigidBody)
+ph_rigidbody* 
+ph_rigidbody_list_remove(ph_rigidbody *head, ph_rigidbody *oldRigidBody)
     {
     // Have we just removed the head?
     if (oldRigidBody->prev == nullptr)

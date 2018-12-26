@@ -34,6 +34,13 @@
     <ClCompile Include="common\ph_transform.cpp">
       <Filter>common</Filter>
     </ClCompile>
+    <ClCompile Include="collision\ph_contact_generator.cpp">
+      <Filter>collision</Filter>
+    </ClCompile>
+    <ClCompile Include="collision\ph_contact.cpp" />
+    <ClCompile Include="collision\ph_contact_resolver.cpp">
+      <Filter>collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="debug\ph_world_renderer.h">
@@ -57,6 +64,15 @@
     </ClInclude>
     <ClInclude Include="common\ph_transform.h">
       <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="collision\ph_contact.h">
+      <Filter>collision</Filter>
+    </ClInclude>
+    <ClInclude Include="collision\ph_contact_generator.h">
+      <Filter>collision</Filter>
+    </ClInclude>
+    <ClInclude Include="collision\ph_contact_resolver.h">
+      <Filter>collision</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

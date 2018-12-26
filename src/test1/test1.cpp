@@ -10,13 +10,15 @@
 ph_alloc crtAllocator;
 ph_world *world;
 
-void demoDraw(IDebugRenderer *worldRenderer)
+void 
+demoDraw(IDebugRenderer *worldRenderer)
 {
     ph_world_step(world);
     ph_world_debug_render(worldRenderer, world);
 }
 
-void demoInit()
+void 
+demoInit()
 {
 
     ph_alloc_crt_init(&crtAllocator);
@@ -27,16 +29,22 @@ void demoInit()
         ph_world_create_rigidbody(world),
         ph_world_create_rigidbody(world),
         ph_world_create_rigidbody(world),
+        ph_world_create_rigidbody(world),
+        ph_world_create_rigidbody(world),
+        ph_world_create_rigidbody(world),
+        ph_world_create_rigidbody(world),
+        ph_world_create_rigidbody(world),
+        ph_world_create_rigidbody(world),
         ph_world_create_rigidbody(world)
     };
 
-    for (int idx = 0; idx < 4; idx++)
+    for (int idx = 0; idx < 10; idx++)
     {
         //TODO: This will be moved into fixtures 
-        ph_rigidbody_set_mass(bodies[idx], idx * 500);
-        ph_rigidbody_set_position(bodies[idx], { (float)idx, 10, 0 });
+        ph_rigidbody_set_mass(bodies[idx], idx * 1 + 1);
+        ph_rigidbody_set_position(bodies[idx], { (float)idx, 2 + (float)idx, 0 });
     }
 
     ph_world_destroy_rigidbody(world, bodies[2]);
-    ph_world_destroy_rigidbody(world, bodies[0]);
+    //ph_world_destroy_rigidbody(world, bodies[0]);
 }

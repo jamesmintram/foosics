@@ -18,15 +18,19 @@ struct ph_rigidbody
 
     float   inv_mass;	//TODO: Derived from fixtures
 
+    //TODO: Required in fixtures + shapes
+    float radius;
+
     ph_rigidbody *next;
     ph_rigidbody *prev;
 };
 
+// Temp (Replaced with fixtures and shapes)
+void            ph_rigidbody_set_radius(ph_rigidbody *i_rigidBody, float i_radius);
+void            ph_rigidbody_set_mass(ph_rigidbody *i_rigidBody, float i_mass);
 
 // Dynamics
-void            ph_rigidbody_set_mass(ph_rigidbody *i_rigidBody, float i_mass);
 void            ph_rigidbody_set_position(ph_rigidbody *i_rigidBody, ph_vec3 const& i_pos);
-
 
 void            ph_rigidbody_add_accell(ph_rigidbody *i_rigidBody, ph_vec3 const& i_accell);
 void            ph_rigidbody_add_force(ph_rigidbody *i_rigidBody, ph_vec3 const& i_force);

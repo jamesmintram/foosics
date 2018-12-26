@@ -19,6 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="collision\ph_contact.cpp" />
+    <ClCompile Include="collision\ph_contact_generator.cpp" />
+    <ClCompile Include="collision\ph_contact_resolver.cpp" />
     <ClCompile Include="common\ph_transform.cpp" />
     <ClCompile Include="common\ph_vec3.cpp" />
     <ClCompile Include="debug\ph_world_renderer.cpp" />
@@ -27,6 +30,9 @@
     <ClCompile Include="ph_alloc.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="collision\ph_contact.h" />
+    <ClInclude Include="collision\ph_contact_generator.h" />
+    <ClInclude Include="collision\ph_contact_resolver.h" />
     <ClInclude Include="common\ph_transform.h" />
     <ClInclude Include="common\ph_vec3.h" />
     <ClInclude Include="debug\DebugRenderer.h" />
