@@ -59,7 +59,5 @@ void ph_world_debug_render(IDebugRenderer *renderer, ph_world *world)
 		
         body = body->next;
     }
-
-    renderer->Render();
 }
 

@@ -73,7 +73,7 @@ ph_world_step(ph_world *world)
     ph_rigidbody *body = world->head;
 
     ph_vec3 gravity = { 0, -9.81f, 0 };
-    float timestep = 1.0f / 250;
+    float timestep = 1.0f / 120;
 
     while (body != nullptr) 
     {

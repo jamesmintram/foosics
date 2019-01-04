@@ -2,6 +2,9 @@
 
 #include "../../foosics/debug/DebugRenderer.h"
 
+#include "../third_party/imgui/imgui.h"
+#include "../third_party/imgui/imgui_impl_dx9.h"
+
 #include <d3d9.h>
 #include <vector>
 
@@ -106,6 +109,7 @@ private:
 	std::vector<RenderedLine> m_lines;
 	std::vector<RenderedPoint> m_points;
 public:
+
 	DebugRenderer()
 		: d3d(nullptr)
 		, d3ddev(nullptr)
@@ -187,6 +191,9 @@ public:
 			D3DPOOL_MANAGED,
 			&triIndices,
 			NULL);
+
+		ImGui_ImplDX9_Init(d3ddev);
+		ImGui_ImplDX9_CreateDeviceObjects();
 	}
 
 	void Render()
@@ -211,6 +218,22 @@ public:
 		RenderTriangles();
 		RenderLines();
 		RenderPoints();
+
+		//Imgui
+
+		d3ddev->SetRenderState(D3DRS_ZENABLE, false);
+		d3ddev->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
+		d3ddev->SetRenderState(D3DRS_SCISSORTESTENABLE, false);
+
+		static int lastFrameCount = 0;
+
+		if (ImGui::GetFrameCount() > lastFrameCount)
+		{
+			lastFrameCount = ImGui::GetFrameCount();
+
+			ImGui::Render();
+			ImGui_ImplDX9_RenderDrawData(ImGui::GetDrawData());
+		}
 
 		End();
 		Flip();

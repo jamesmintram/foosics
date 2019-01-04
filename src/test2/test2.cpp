@@ -6,6 +6,8 @@
 #include "../../foosics/dynamics/ph_world.h"
 #include "../../foosics/dynamics/ph_rigidbody.h"
 
+#include "../third_party/imgui/imgui.h"
+
 ph_alloc crtAllocator;
 ph_world *world;
 
@@ -13,6 +15,11 @@ void demoDraw(IDebugRenderer *worldRenderer)
 {
     ph_world_step(world);
     ph_world_debug_render(worldRenderer, world);
+
+	if (ImGui::Begin("Test")) {
+		ImGui::Button("Hello World");		
+	}
+	ImGui::End();
 }
 
 
@@ -40,9 +47,9 @@ void demoInit()
     ph_rigidbody_set_position(bodies[1], { 4, 8, 0 });
     bodies[1]->restitution = 1.0f;
 
-    ph_rigidbody_set_position(bodies[2], { 4, 16, 0 });
+    ph_rigidbody_set_position(bodies[2], { 3.5f, 16, 0 });
     bodies[2]->restitution = 1.0f;
 
-    ph_rigidbody_set_position(bodies[3], { 4, 18, 0 });
+    ph_rigidbody_set_position(bodies[3], { 4.5f, 17.5f, 0 });
     bodies[3]->restitution = 0.0f;
 }

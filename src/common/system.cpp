@@ -7,6 +7,13 @@
 
 #include "DebugRenderer_DX9.h"
 
+#include "../third_party/imgui/imgui.h"
+#include "../third_party/imgui/imgui_impl_dx9.h"
+
+#include "../third_party/imgui/imgui_impl_win32.h"
+
+IMGUI_IMPL_API LRESULT  ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 DebugRenderer *renderer = nullptr;
 
 void checkLastError() {
@@ -135,7 +142,25 @@ LRESULT drawDX(HWND hwnd)
 
 	renderer->SetViewProj(viewMat, projmat);
 
+	ImGui_ImplDX9_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+
 	demoDraw(renderer);
+
+	ImGui::EndFrame();
+
+	renderer->Render();
+
+	//// Start the Dear ImGui frame
+	//ImGui_ImplDX9_NewFrame();
+	////ImGui_ImplWin32_NewFrame();
+	//ImGui::NewFrame();
+	//// Rendering
+	//ImGui::EndFrame();
+
+	
+	
 	return 0;
 }
 
@@ -164,6 +189,9 @@ LRESULT CALLBACK WindowProc(
 	_In_ WPARAM wParam,
 	_In_ LPARAM lParam )
 {
+	if (ImGui_ImplWin32_WndProcHandler(hwnd, uMsg, wParam, lParam))
+		return true;
+
 	switch (uMsg)
 	{
 	case WM_CREATE:
@@ -254,6 +282,14 @@ HWND createWindow(HINSTANCE hinstance) {
 	checkLastError();
 
 	ShowWindow(hWnd, SW_SHOW);
+
+	// Setup Dear ImGui context
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGui::StyleColorsDark();
+
+	ImGui_ImplWin32_Init(hWnd);
 
 	renderer = new DebugRenderer();
 	renderer->initDX(hWnd);
