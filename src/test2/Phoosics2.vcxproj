@@ -20,9 +20,23 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\common\DebugRenderer_DX9.h" />
+    <ClInclude Include="..\third_party\imgui\imconfig.h" />
+    <ClInclude Include="..\third_party\imgui\imgui.h" />
+    <ClInclude Include="..\third_party\imgui\imgui_impl_dx9.h" />
+    <ClInclude Include="..\third_party\imgui\imgui_impl_win32.h" />
+    <ClInclude Include="..\third_party\imgui\imgui_internal.h" />
+    <ClInclude Include="..\third_party\imgui\imstb_rectpack.h" />
+    <ClInclude Include="..\third_party\imgui\imstb_textedit.h" />
+    <ClInclude Include="..\third_party\imgui\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\common\system.cpp" />
+    <ClCompile Include="..\third_party\imgui\imgui.cpp" />
+    <ClCompile Include="..\third_party\imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\third_party\imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\third_party\imgui\imgui_impl_dx9.cpp" />
+    <ClCompile Include="..\third_party\imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="..\third_party\imgui\imgui_widgets.cpp" />
     <ClCompile Include="test2.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -34,7 +48,7 @@
     <ProjectGuid>{736DBFCC-8F85-4A9D-B484-4859E4FB659D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>CasualJME</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -53,7 +67,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">

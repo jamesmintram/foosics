@@ -1,5 +1,7 @@
 #include "ph_vec3.h"
 
+#include "ph_assert.h"
+
 #include <math.h>
 #include <float.h>
 
@@ -10,11 +12,8 @@ void
 ph_vec3_normalise(ph_vec3 &o_dest, ph_vec3 const& i_a)
 {
     float mag = ph_vec3_magnitude(i_a);
-    if (mag < FLT_EPSILON)
-    {
-        //TODO: Assert
-        return;
-    }
+
+	PH_ASSERT(mag < FLT_EPSILON);
 
     float inv_mag = 1.0f / mag;
 

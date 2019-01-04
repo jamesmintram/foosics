@@ -74,6 +74,9 @@
     <ClInclude Include="collision\ph_contact_resolver.h">
       <Filter>collision</Filter>
     </ClInclude>
+    <ClInclude Include="common\ph_assert.h">
+      <Filter>common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="doc\notes.md">

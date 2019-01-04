@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../foosics/debug/DebugRenderer.h"
+#include "../../foosics/common/ph_assert.h"
 
 #include "../third_party/imgui/imgui.h"
 #include "../third_party/imgui/imgui_impl_dx9.h"
@@ -308,6 +309,7 @@ private:
 
 			size_t startVert = currentVertex - triBufferData;
 
+
 			//TODO: Push transformed verts into the buffer
 			for (int idx = 0; idx < COUNT_OF(cube); idx++)
 			{
@@ -321,9 +323,12 @@ private:
 				currentVertex++;
 			}
 
-			for (int idx = 0; idx < COUNT_OF(cubeIndices); idx++)
+			for (size_t idx = 0; idx < COUNT_OF(cubeIndices); idx++)
 			{
-				*currentIndex = cubeIndices[idx] + startVert;
+				size_t index = cubeIndices[idx] + startVert;
+				PH_ASSERT(index < 0xFFFF);
+
+				*currentIndex = (uint16_t)index;
 				currentIndex++;
 			}
 		}
@@ -332,8 +337,8 @@ private:
 		triIndices->Unlock();
 
 		m_cubes.clear();
-		size_t const triCount = (currentIndex - indices) / 3;
-		size_t const vertCount = currentVertex - triBufferData;
+		uint32_t const triCount = (uint32_t)((currentIndex - indices) / 3);
+		uint32_t const vertCount = (uint32_t)(currentVertex - triBufferData);
 
 		if (triCount == 0) return;
 
@@ -344,13 +349,13 @@ private:
 	}
 	void RenderLines()
 	{
-		const size_t lineCount = m_lines.size();
+		const uint32_t lineCount = (uint32_t)m_lines.size();
 		if (lineCount == 0) return;
 
 		CUSTOMVERTEX* lineBufferData = nullptr;
 		lineBuffer->Lock(0, 0, (void**)&lineBufferData, 0);
 
-		for (size_t idx = 0; idx < lineCount; idx++)
+		for (uint32_t idx = 0; idx < lineCount; idx++)
 		{
 			RenderedLine const& line = m_lines[idx];
 

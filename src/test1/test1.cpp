@@ -41,7 +41,7 @@ demoInit()
     for (int idx = 0; idx < 10; idx++)
     {
         //TODO: This will be moved into fixtures 
-        ph_rigidbody_set_mass(bodies[idx], idx * 1 + 1);
+        ph_rigidbody_set_mass(bodies[idx], (float)(idx * 1 + 1));
         ph_rigidbody_set_position(bodies[idx], { (float)idx, 2 + (float)idx, 0 });
     }
 
