@@ -13,7 +13,7 @@ ph_vec3_normalise(ph_vec3 &o_dest, ph_vec3 const& i_a)
 {
     float mag = ph_vec3_magnitude(i_a);
 
-	PH_ASSERT(mag < FLT_EPSILON);
+	PH_ASSERT(mag > FLT_EPSILON);
 
     float inv_mag = 1.0f / mag;
 
